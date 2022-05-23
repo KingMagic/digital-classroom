@@ -1,5 +1,5 @@
 import { request } from 'umi';
-import { SchoolItem } from './data';
+import type { SchoolItem } from './data';
 
 export async function getSchoolList(): Promise<{ data: SchoolItem[] }> {
   return request('/api/getSchoolList');
