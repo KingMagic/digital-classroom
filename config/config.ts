@@ -92,7 +92,7 @@ export default defineConfig({
           name: '课程管理',
           icon: 'smile',
           path: '/analysis/course',
-          component: './dashboard/workplace',
+          component: './analysis/course',
         },
       ],
     },

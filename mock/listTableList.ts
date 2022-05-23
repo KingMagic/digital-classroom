@@ -1,6 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { SchoolItem } from '@/pages/analysis/school/data';
-import { Request, Response } from 'express';
+import type { CourseItem } from '@/pages/analysis/course/data';
+import type { SchoolItem } from '@/pages/analysis/school/data';
+import type { Request, Response } from 'express';
 import moment from 'moment';
 import { parse } from 'url';
 
@@ -234,6 +235,90 @@ function deleteSchool(req: Request, res: Response) {
   res.json(result);
 }
 
+const genClassList = (current: number, pageSize: number) => {
+  const classListDataSource = [];
+
+  for (let i = 0; i < pageSize; i += 1) {
+    const index = (current - 1) * 10 + i;
+    classListDataSource.push({
+      id: index,
+      name: `class ${index}`,
+      school: schoolList[1],
+      admin: 'banzhuren',
+      studentNumber: 99,
+    });
+  }
+  return classListDataSource;
+};
+
+let classList = genClassList(1, 6);
+
+const genCourseList = (current: number, pageSize: number) => {
+  const courseListDataSource = [];
+
+  for (let i = 0; i < pageSize; i += 1) {
+    const index = (current - 1) * 10 + i;
+    courseListDataSource.push({
+      id: index,
+      name: `course ${index}`,
+      school: schoolList[1],
+      classList: classList.slice(1,3),
+      beginTime: 1231231231231,
+      raise: 12,
+      stand: 13,
+      lie: 14,
+      active: 15,
+      listenPercent: 16,
+    });
+  }
+  return courseListDataSource;
+};
+
+let courseList = genCourseList(1, 6);
+
+function getCourseList(req: Request, res: Response) {
+  const result = {
+    data: courseList,
+    total: courseList.length,
+    success: true,
+  };
+
+  res.json(result);
+}
+
+const genStudentList = (current: number, pageSize: number) => {
+  const studentListDataSource = [];
+
+  for (let i = 0; i < pageSize; i += 1) {
+    const index = (current - 1) * 10 + i;
+    studentListDataSource.push({
+      id: index,
+      name: `student ${index}`,
+      school: schoolList[1],
+      class: classList[1],
+      raiseStatus: index%2,
+      raise: index+1,
+      stand: index+3,
+      attention: index*17%5
+    });
+  }
+  return studentListDataSource;
+}
+
+let studentList = genStudentList(1, 20)
+
+function getRealTimeData(req: Request, res: Response) {
+  const { classId } = req.query;
+  const filterList = studentList.filter(student => student.class.id === Number(classId))
+  const result = {
+    data: filterList,
+    total: filterList.length,
+    success: true,
+  };
+
+  res.json(result);
+}
+
 export default {
   'GET /api/rule': getRule,
   'POST /api/rule': postRule,
@@ -241,4 +326,6 @@ export default {
   'POST /api/addSchool': addSchool,
   'POST /api/alterSchool': alterSchool,
   'POST /api/deleteSchool': deleteSchool,
+  'GET /api/getCourseList': getCourseList,
+  'GET /api/getRealTimeData': getRealTimeData,
 };
