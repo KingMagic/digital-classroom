@@ -299,7 +299,7 @@ const genStudentList = (current: number, pageSize: number) => {
       raiseStatus: index%2,
       raise: index+1,
       stand: index+3,
-      attention: index*17%5
+      attention: (Math.random()*100).toFixed(2)+'%' 
     });
   }
   return studentListDataSource;
@@ -309,7 +309,7 @@ let studentList = genStudentList(1, 20)
 
 function getRealTimeData(req: Request, res: Response) {
   const { classId } = req.query;
-  const filterList = studentList.filter(student => student.class.id === Number(classId))
+  const filterList = studentList.filter(student => student.class.id === Number(classId)).map(student => ({...student, attention: (Math.random()*100).toFixed(2)+'%' }))
   const result = {
     data: filterList,
     total: filterList.length,

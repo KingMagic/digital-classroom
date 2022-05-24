@@ -64,6 +64,8 @@
     "btoa": "^1.2.1",
     "classnames": "^2.2.6",
     "gg-editor": "^2.0.2",
+    "highcharts": "^10.1.0",
+    "highcharts-react-official": "^3.1.0",
     "lodash": "^4.17.11",
     "lodash-decorators": "^6.0.0",
     "moment": "^2.25.3",

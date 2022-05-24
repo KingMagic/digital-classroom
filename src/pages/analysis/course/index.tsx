@@ -8,6 +8,7 @@ import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import moment from "moment";
 import { ClassItem } from "../class/data";
 import RealTimeTable from "./components/RealTimeTable";
+import AnalysisModal from "./components/AnalysisModal";
 
 const Course = () => {
   
@@ -16,6 +17,7 @@ const Course = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([])
   const [currentCourse, setCurrentCourse] = useState<CourseItem>()
   const [showRealTime, setShowRealTime] = useState(false)
+  const [showAnalysis, setShowAnalysis] = useState(false)
 
   const compare = (a: CourseItem, b: CourseItem, key: string) => {
     if (a[key] < b[key]) {
@@ -101,7 +103,10 @@ const Course = () => {
           setShowRealTime(true)
           setCurrentCourse(entity)
         }}>实时</Button>
-        <Button style={{backgroundColor: '#E6A23C'}} ghost>统计分析</Button>
+        <Button style={{backgroundColor: '#E6A23C'}} ghost onClick={() => {
+          setShowAnalysis(true)
+          setCurrentCourse(entity)
+        }}>统计分析</Button>
         <Button style={{backgroundColor: '#F56C6C'}} ghost>详细列表</Button>
       </Space>
     )
@@ -162,6 +167,7 @@ const Course = () => {
           ))}
         </Row>
       </Modal>
+      {showAnalysis && <AnalysisModal onCancel={() => setShowAnalysis(false)} />}
     </>
   )
 }

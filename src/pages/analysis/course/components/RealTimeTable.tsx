@@ -47,6 +47,7 @@ const RealTimeTable = (props: Props) => {
       bordered
       columns={columns}
       dataSource={data}
+      pagination={false}
       rowKey="id"
       scroll={{y: 200}}
       size="small"
