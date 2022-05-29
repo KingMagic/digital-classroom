@@ -2,11 +2,11 @@ import { request } from 'umi';
 import type { SchoolItem } from './data';
 
 export async function getSchoolList(): Promise<{ data: SchoolItem[] }> {
-  return request('/api/getSchoolList');
+  return request('/api/School')
 }
 
 export async function addSchool(data: { [key: string]: any }, options?: { [key: string]: any }) {
-  return request('/api/addSchool', {
+  return request('/api/School', {
     data,
     method: 'POST',
     ...(options || {}),
@@ -14,17 +14,17 @@ export async function addSchool(data: { [key: string]: any }, options?: { [key: 
 }
 
 export async function alterSchool(data: { [key: string]: any }, options?: { [key: string]: any }) {
-  return request('/api/alterSchool', {
+  return request('/api/School/'+data.id, {
     data,
-    method: 'POST',
+    method: 'PUT',
     ...(options || {}),
   })
 }
 
 export async function deleteSchool(data: { [key: string]: any }, options?: { [key: string]: any }) {
-  return request('/api/deleteSchool', {
+  return request('/api/School/'+data.id, {
     data,
-    method: 'POST',
+    method: 'DELETE',
     ...(options || {}),
   })
 }

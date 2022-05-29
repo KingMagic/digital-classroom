@@ -6,9 +6,9 @@ import { getCourseList } from "./service";
 import { Button, Col, Modal, Row, Space, Tag } from "antd";
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import moment from "moment";
-import { ClassItem } from "../class/data";
 import RealTimeTable from "./components/RealTimeTable";
 import AnalysisModal from "./components/AnalysisModal";
+import { ClassRoomItem } from "../classroom/data";
 
 const Course = () => {
   
@@ -50,7 +50,7 @@ const Course = () => {
     sorter: {
       compare: (a, b) => compare(a, b, 'name')
     },
-    render: (dom: any) => dom.map((item: ClassItem) => <Tag key={item.id} color="blue">{item.name}</Tag>)
+    render: (dom: any) => dom.map((item: ClassRoomItem) => <Tag key={item.id} color="blue">{item.ClassName}</Tag>)
   }, {
     title: '开课时间',
     dataIndex: 'beginTime',

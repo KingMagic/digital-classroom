@@ -1,6 +1,6 @@
 import type { Settings as LayoutSettings } from '@ant-design/pro-layout';
 import { PageLoading } from '@ant-design/pro-layout';
-import type { RunTimeLayoutConfig } from 'umi';
+import type { RequestConfig, RunTimeLayoutConfig } from 'umi';
 import { history, Link } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
@@ -26,7 +26,7 @@ export async function getInitialState(): Promise<{
   const fetchUserInfo = async () => {
     try {
       const msg = await queryCurrentUser();
-      return msg.data;
+      return msg;
     } catch (error) {
       history.push(loginPath);
     }
@@ -59,6 +59,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     onPageChange: () => {
       const { location } = history;
       // 如果没有登录，重定向到 login
+      console.log(initialState)
       if (!initialState?.currentUser && location.pathname !== loginPath) {
         history.push(loginPath);
       }
@@ -80,4 +81,20 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     // unAccessible: <div>unAccessible</div>,
     ...initialState?.settings,
   };
+};
+
+const authHeaderInterceptor = (url: string, options: any) => {
+  return {
+    url: `${url}`,
+    options: {
+      ...options,
+      interceptors: true,
+      skipErrorHandler: true,
+    },
+  };
+};
+
+export const request: RequestConfig = {
+  // 新增自动添加AccessToken的请求前拦截器
+  requestInterceptors: [authHeaderInterceptor],
 };

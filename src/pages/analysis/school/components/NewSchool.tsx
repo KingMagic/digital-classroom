@@ -10,10 +10,13 @@ type NewSchoolProps = {
 
 const NewSchool = ({ onBack }: NewSchoolProps) => {
 
-  const { courseMap } = useModel("courseModel")
+  const { courseMap } = useModel("dictModel")
   
-  const onFinish = (data: SchoolItem) => {
-    return addSchool({data}).then(res => {
+  const onFinish = (data: any) => {
+    return addSchool({
+      ...data,
+      Subjects: data.Subjects.join(',')
+    }).then(res => {
       console.log(res)
       if (res.success) {
         onBack()
@@ -47,16 +50,16 @@ const NewSchool = ({ onBack }: NewSchoolProps) => {
           },
         }}
       >
-        <ProFormText name="name" label="校区" required rules={[{
+        <ProFormText name="SchoolName" label="校区" required rules={[{
           required: true,
           message: '请输入校区'
         }]} />
-        <ProFormText name="address" label="地区" required rules={[{
+        <ProFormText name="Area" label="地区" required rules={[{
           required: true,
           message: '请输入地区'
         }]} />
         <ProFormCheckbox.Group
-          name="course"
+          name="Subjects"
           label="授课科目"
           options={courseMap}
           required

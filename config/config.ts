@@ -73,20 +73,20 @@ export default defineConfig({
         {
           name: '班级管理',
           icon: 'smile',
-          path: '/analysis/class',
-          component: './dashboard/monitor',
+          path: '/analysis/classroom',
+          component: './analysis/classroom',
         },
         {
           name: '教师管理',
           icon: 'smile',
           path: '/analysis/teacher',
-          component: './dashboard/workplace',
+          component: './analysis/teacher',
         },
         {
           name: '学生管理',
           icon: 'smile',
           path: '/analysis/student',
-          component: './dashboard/workplace',
+          component: './analysis/student',
         },
         {
           name: '课程管理',

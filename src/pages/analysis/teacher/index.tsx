@@ -1,22 +1,22 @@
 import { DeleteOutlined, EditOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table'
-import { Button, message, Popconfirm, Tag } from 'antd'
+import { Avatar, Button, message, Popconfirm, Tag } from 'antd'
 import { Key, useEffect, useRef, useState } from 'react'
 import { useModel } from 'umi'
-import AlterSchool from './components/AlterSchool'
-import NewSchool from './components/NewSchool'
-import { SchoolItem } from './data'
-import { deleteSchool, getSchoolList } from './service'
+import AlterTeacher from './components/AlterTeacher'
+import NewTeacher from './components/NewTeacher'
+import { TeacherItem } from './data'
+import { deleteTeacher, getTeacherList } from './service'
 
-const School = () => {
+const Teacher = () => {
 
-  const { courseMap } = useModel("dictModel")
+  const { courseMap, genderMap, roleMap } = useModel("dictModel")
   const ref = useRef<ActionType>();
   const [tab, setTab] = useState('index')
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([])
-  const [selectedSchoolList, setSelectedSchoolList] = useState<SchoolItem[]>([])
+  const [selectedTeacher, setSelectedTeacher] = useState<TeacherItem>()
 
-  const compare = (a: SchoolItem, b: SchoolItem, key: string) => {
+  const compare = (a: TeacherItem, b: TeacherItem, key: string) => {
     if (a[key] < b[key]) {
       return -1
     } else if (a[key] > b[key]) {
@@ -25,36 +25,55 @@ const School = () => {
     return 0
   }
 
-  const columns: ProColumns<SchoolItem>[] = [{
+  const columns: ProColumns<TeacherItem>[] = [{
     align: 'center',
-    dataIndex: 'SchoolName',
+    dataIndex: 'TeacherID',
     sorter: {
-      compare: (a, b) => compare(a, b, 'SchoolName')
+      compare: (a, b) => compare(a, b, 'TeacherID')
     },
-    title: '校区',
+    title: '职工号',
   }, {
     align: 'center',
-    dataIndex: 'Area',
+    dataIndex: 'Name',
     sorter: {
-      compare: (a, b) => compare(a, b, 'Area')
+      compare: (a, b) => compare(a, b, 'Name')
     },
-    title: '地区',
+    title: '姓名',
   }, {
     align: 'center',
-    dataIndex: 'Subjects',
+    dataIndex: 'Gender',
+    title: '性别',
+    render: (text: any) => genderMap.find(gender => gender.value === text)?.label
+  }, {
+    align: 'center',
+    dataIndex: 'PassPort',
+    title: '账号',
+  }, {
+    align: 'center',
+    dataIndex: 'Role',
+    title: '角色',
+    render: (text: any) => text.split(',').map((item: string) => <Tag color="blue" key={item}>{roleMap.find(role => role.value === item)?.label}</Tag>),
+  }, {
+    align: 'center',
+    dataIndex: 'Course',
     title: '授课科目',
     render: (text: any) => text.split(',').map((item: string) => <Tag color="blue" key={item}>{courseMap.find(course => course.value === item)?.label}</Tag>),
+  }, {
+    align: 'center',
+    dataIndex: 'Avatar',
+    title: '头像',
+    render: (text: any) => <Avatar shape="square" src={text} />
   }, {
     align: 'center',
     dataIndex: 'action',
     title: '动作',
     render: (dom, entity) => [
       <a key="edit" onClick={() => {
-        setSelectedSchoolList([entity])
+        setSelectedTeacher(entity)
         setTab('alter')
       }} style={{color: '#67C23A', padding: '6px 10px'}}><EditOutlined /> 修改</a>,
       <Popconfirm title="确认要删除吗" onConfirm={() => {
-        deleteSchool({id: entity.id}).then(res => {
+        deleteTeacher({id: entity.id}).then(res => {
           ref.current?.reload()
           // if (res.success) {
           //   ref.current?.reload()
@@ -68,22 +87,21 @@ const School = () => {
   }]
 
   const deleteBatch = () => {
-    Promise.all(selectedRowKeys.map(key => deleteSchool({id: key}))).then(res => {
+    Promise.all(selectedRowKeys.map(key => deleteTeacher({id: key}))).then(res => {
       ref.current?.reload()
     })
   }
 
-  const SchoolTable = () => (
-    <ProTable<SchoolItem>
+  const TeacherTable = () => (
+    <ProTable<TeacherItem>
       actionRef={ref}
       bordered
       columns={columns}
-      request={getSchoolList}
+      request={getTeacherList}
       rowKey="id"
       rowSelection={{
         onChange: (selectedRowKeys, selectedRows) => {
           setSelectedRowKeys(selectedRowKeys)
-          setSelectedSchoolList(selectedRows)
         },
         selectedRowKeys,
       }}
@@ -112,11 +130,11 @@ const School = () => {
 
   return (
     <div>
-    {tab === 'index' && SchoolTable()}
-    {tab === 'new' && <NewSchool onBack={() => setTab('index')} />}
-    {tab === 'alter' && <AlterSchool onBack={() => setTab('index')} selectedSchoolList={selectedSchoolList} />}
+    {tab === 'index' && TeacherTable()}
+    {tab === 'new' && <NewTeacher onBack={() => setTab('index')} />}
+    {tab === 'alter' && <AlterTeacher onBack={() => setTab('index')} selectedTeacher={selectedTeacher} />}
     </div>
   )
 }
 
-export default School
+export default Teacher

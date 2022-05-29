@@ -5,8 +5,8 @@ import { history, useModel } from 'umi';
 import { stringify } from 'querystring';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
-import { outLogin } from '@/services/ant-design-pro/api';
 import type { MenuInfo } from 'rc-menu/lib/interface';
+import { outLogin } from '@/services/ant-design-pro/login';
 
 export type GlobalHeaderRightProps = {
   menu?: boolean;

@@ -12,11 +12,14 @@ type AlterSchoolProps = {
 
 const AlterSchool = ({ onBack, selectedSchoolList }: AlterSchoolProps) => {
 
-  const { courseMap } = useModel("courseModel")
+  const { courseMap } = useModel("dictModel")
   const [index, setIndex] = useState(0)
 
   const onFinish = (data: SchoolItem) => {
-    return alterSchool({data}).then(res => {
+    return alterSchool({
+      ...data,
+      Subjects: data.Subjects.join(',')
+    }).then(res => {
       console.log(res)
       if (res.success) {
         onBack()
@@ -51,16 +54,16 @@ const AlterSchool = ({ onBack, selectedSchoolList }: AlterSchoolProps) => {
         }}
       >
         <ProFormText name="id" hidden />
-        <ProFormText name="name" label="校区" required rules={[{
+        <ProFormText name="SchoolName" label="校区" required rules={[{
           required: true,
           message: '请输入校区'
         }]} />
-        <ProFormText name="address" label="地区" required rules={[{
+        <ProFormText name="Area" label="地区" required rules={[{
           required: true,
           message: '请输入地区'
         }]} />
         <ProFormCheckbox.Group
-          name="course"
+          name="Subjects"
           label="授课科目"
           options={courseMap}
           required

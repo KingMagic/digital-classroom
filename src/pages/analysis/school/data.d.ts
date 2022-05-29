@@ -1,8 +1,8 @@
 export type SchoolItem = {
   id: number;
-  name: string;
-  address: string;
-  course: string[];
+  SchoolName: string;
+  Area: string;
+  Subjects: string[];
 };
 
 export type TableListPagination = {

@@ -2,21 +2,19 @@ import { DeleteOutlined, EditOutlined, MinusCircleOutlined, PlusOutlined } from 
 import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table'
 import { Button, message, Popconfirm, Tag } from 'antd'
 import { Key, useEffect, useRef, useState } from 'react'
-import { useModel } from 'umi'
-import AlterSchool from './components/AlterSchool'
-import NewSchool from './components/NewSchool'
-import { SchoolItem } from './data'
-import { deleteSchool, getSchoolList } from './service'
+import AlterClassRoom from './components/AlterClassRoom'
+import NewClassRoom from './components/NewClassRoom'
+import { ClassRoomItem } from './data'
+import { getClassRoomList, deleteClassRoom } from './service'
 
 const School = () => {
 
-  const { courseMap } = useModel("dictModel")
   const ref = useRef<ActionType>();
   const [tab, setTab] = useState('index')
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([])
-  const [selectedSchoolList, setSelectedSchoolList] = useState<SchoolItem[]>([])
+  const [selectedClassRoom, setSelectedClassRoom] = useState<ClassRoomItem>()
 
-  const compare = (a: SchoolItem, b: SchoolItem, key: string) => {
+  const compare = (a: ClassRoomItem, b: ClassRoomItem, key: string) => {
     if (a[key] < b[key]) {
       return -1
     } else if (a[key] > b[key]) {
@@ -25,36 +23,52 @@ const School = () => {
     return 0
   }
 
-  const columns: ProColumns<SchoolItem>[] = [{
+  const columns: ProColumns<ClassRoomItem>[] = [{
+    align: 'center',
+    dataIndex: 'ClassID',
+    sorter: {
+      compare: (a, b) => compare(a, b, 'ClassID')
+    },
+    title: '班级编号',
+  }, {
     align: 'center',
     dataIndex: 'SchoolName',
     sorter: {
       compare: (a, b) => compare(a, b, 'SchoolName')
     },
-    title: '校区',
+    title: '校区名称',
   }, {
     align: 'center',
-    dataIndex: 'Area',
+    dataIndex: 'ClassName',
     sorter: {
-      compare: (a, b) => compare(a, b, 'Area')
+      compare: (a, b) => compare(a, b, 'ClassName')
     },
-    title: '地区',
+    title: '班级名称',
   }, {
     align: 'center',
-    dataIndex: 'Subjects',
-    title: '授课科目',
-    render: (text: any) => text.split(',').map((item: string) => <Tag color="blue" key={item}>{courseMap.find(course => course.value === item)?.label}</Tag>),
+    dataIndex: 'TeacherName',
+    sorter: {
+      compare: (a, b) => compare(a, b, 'TeacherName')
+    },
+    title: '班主任',
+  }, {
+    align: 'center',
+    dataIndex: 'Students',
+    sorter: {
+      compare: (a, b) => compare(a, b, 'Students')
+    },
+    title: '学生数量',
   }, {
     align: 'center',
     dataIndex: 'action',
     title: '动作',
     render: (dom, entity) => [
       <a key="edit" onClick={() => {
-        setSelectedSchoolList([entity])
+        setSelectedClassRoom(entity)
         setTab('alter')
       }} style={{color: '#67C23A', padding: '6px 10px'}}><EditOutlined /> 修改</a>,
       <Popconfirm title="确认要删除吗" onConfirm={() => {
-        deleteSchool({id: entity.id}).then(res => {
+        deleteClassRoom({id: entity.id}).then(res => {
           ref.current?.reload()
           // if (res.success) {
           //   ref.current?.reload()
@@ -68,22 +82,23 @@ const School = () => {
   }]
 
   const deleteBatch = () => {
-    Promise.all(selectedRowKeys.map(key => deleteSchool({id: key}))).then(res => {
+    console.log(selectedRowKeys)
+    Promise.all(selectedRowKeys.map(key => deleteClassRoom({id: key}))).then(res => {
+      console.log(res)
       ref.current?.reload()
     })
   }
 
-  const SchoolTable = () => (
-    <ProTable<SchoolItem>
+  const ClassRoomTable = () => (
+    <ProTable<ClassRoomItem>
       actionRef={ref}
       bordered
       columns={columns}
-      request={getSchoolList}
+      request={getClassRoomList}
       rowKey="id"
       rowSelection={{
         onChange: (selectedRowKeys, selectedRows) => {
           setSelectedRowKeys(selectedRowKeys)
-          setSelectedSchoolList(selectedRows)
         },
         selectedRowKeys,
       }}
@@ -112,9 +127,9 @@ const School = () => {
 
   return (
     <div>
-    {tab === 'index' && SchoolTable()}
-    {tab === 'new' && <NewSchool onBack={() => setTab('index')} />}
-    {tab === 'alter' && <AlterSchool onBack={() => setTab('index')} selectedSchoolList={selectedSchoolList} />}
+    {tab === 'index' && ClassRoomTable()}
+    {tab === 'new' && <NewClassRoom onBack={() => setTab('index')} />}
+    {tab === 'alter' && <AlterClassRoom onBack={() => setTab('index')} selectedClassRoom={selectedClassRoom} />}
     </div>
   )
 }

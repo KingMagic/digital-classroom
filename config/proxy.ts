@@ -9,23 +9,28 @@
 export default {
   dev: {
     '/api/': {
-      target: 'https://preview.pro.ant.design',
+      target: 'http://qctk.nat300.top/',
+      changeOrigin: true,
+      pathRewrite: { '^': '' },
+    },
+    '/login': {
+      target: 'http://qctk.nat300.top/',
       changeOrigin: true,
       pathRewrite: { '^': '' },
     },
   },
-  test: {
-    '/api/': {
-      target: 'https://preview.pro.ant.design',
-      changeOrigin: true,
-      pathRewrite: { '^': '' },
-    },
-  },
-  pre: {
-    '/api/': {
-      target: 'your pre url',
-      changeOrigin: true,
-      pathRewrite: { '^': '' },
-    },
-  },
+  // test: {
+  //   '/api/': {
+  //     target: 'http://ehm9hq.natappfree.cc',
+  //     changeOrigin: true,
+  //     pathRewrite: { '^': '' },
+  //   },
+  // },
+  // pre: {
+  //   '/api/': {
+  //     target: 'http://ehm9hq.natappfree.cc',
+  //     changeOrigin: true,
+  //     pathRewrite: { '^': '' },
+  //   },
+  // },
 };
