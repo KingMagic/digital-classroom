@@ -52,7 +52,7 @@ const Course = () => {
     },
     render: (dom: any) => dom.map((item: ClassRoomItem) => <Tag key={item.id} color="blue">{item.ClassName}</Tag>)
   }, {
-    title: '开课时间',
+    title: '上课时间',
     dataIndex: 'beginTime',
     align: 'center',
     sorter: {
@@ -60,36 +60,44 @@ const Course = () => {
     },
     render: (dom: any) => moment(dom).format('YYYY-MM-DD hh:mm:ss')
   }, {
-    title: '举手',
+    title: '课程时长',
+    dataIndex: 'beginTime',
+    align: 'center',
+    sorter: {
+      compare: (a, b) => compare(a, b, 'beginTime')
+    },
+    render: (dom: any) => moment(dom).format('YYYY-MM-DD hh:mm:ss')
+  }, {
+    title: '举手次数',
     dataIndex: 'raise',
     align: 'center',
     sorter: {
       compare: (a, b) => compare(a, b, 'name')
     },
   }, {
-    title: '站立',
+    title: '站立次数',
     dataIndex: 'stand',
     align: 'center',
     sorter: {
       compare: (a, b) => compare(a, b, 'name')
     },
   }, {
-    title: '趴桌',
+    title: '趴桌占比',
     dataIndex: 'lie',
     align: 'center',
     sorter: {
       compare: (a, b) => compare(a, b, 'name')
     },
   }, {
-    title: '活跃度',
-    dataIndex: 'active',
+    title: '看黑板占比',
+    dataIndex: 'lie',
     align: 'center',
     sorter: {
       compare: (a, b) => compare(a, b, 'name')
     },
   }, {
-    title: '听课率',
-    dataIndex: 'listenPercent',
+    title: '状态',
+    dataIndex: 'active',
     align: 'center',
     sorter: {
       compare: (a, b) => compare(a, b, 'name')
@@ -102,12 +110,7 @@ const Course = () => {
         <Button style={{backgroundColor: '#909399'}} ghost onClick={() => {
           setShowRealTime(true)
           setCurrentCourse(entity)
-        }}>实时</Button>
-        <Button style={{backgroundColor: '#E6A23C'}} ghost onClick={() => {
-          setShowAnalysis(true)
-          setCurrentCourse(entity)
-        }}>统计分析</Button>
-        <Button style={{backgroundColor: '#F56C6C'}} ghost>详细列表</Button>
+        }}>课程分析</Button>
       </Space>
     )
   }]

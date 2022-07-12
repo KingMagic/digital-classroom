@@ -57,44 +57,43 @@ export default defineConfig({
     },
     {
       path: '/analysis',
-      name: '课情分析',
-      icon: 'dashboard',
-      routes: [
-        {
-          path: '/analysis',
-          redirect: '/analysis/school',
-        },
-        {
-          name: '校区管理',
-          icon: 'smile',
-          path: '/analysis/school',
-          component: './analysis/school',
-        },
-        {
-          name: '班级管理',
-          icon: 'smile',
-          path: '/analysis/classroom',
-          component: './analysis/classroom',
-        },
-        {
-          name: '教师管理',
-          icon: 'smile',
-          path: '/analysis/teacher',
-          component: './analysis/teacher',
-        },
-        {
-          name: '学生管理',
-          icon: 'smile',
-          path: '/analysis/student',
-          component: './analysis/student',
-        },
-        {
-          name: '课程管理',
-          icon: 'smile',
-          path: '/analysis/course',
-          component: './analysis/course',
-        },
-      ],
+      redirect: '/analysis/course',
+    },
+    {
+      name: '校区管理',
+      icon: 'smile',
+      path: '/analysis/school',
+      component: './analysis/school',
+    },
+    {
+      name: '班级管理',
+      icon: 'smile',
+      path: '/analysis/classroom',
+      component: './analysis/classroom',
+    },
+    // {
+    //   name: '分组管理',
+    //   icon: 'smile',
+    //   path: '/analysis/group',
+    //   component: './analysis/group',
+    // },
+    // {
+    //   name: '教师管理',
+    //   icon: 'smile',
+    //   path: '/analysis/teacher',
+    //   component: './analysis/teacher',
+    // },
+    // {
+    //   name: '学生管理',
+    //   icon: 'smile',
+    //   path: '/analysis/student',
+    //   component: './analysis/student',
+    // },
+    {
+      name: '课程管理',
+      icon: 'smile',
+      path: '/analysis/course',
+      component: './analysis/course',
     },
     {
       path: '/',

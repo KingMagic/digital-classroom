@@ -1,4 +1,4 @@
-import { DeleteOutlined, EditOutlined, MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
+import { DeleteOutlined, EditOutlined, MinusCircleOutlined, PlusOutlined, TeamOutlined } from '@ant-design/icons'
 import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table'
 import { Button, message, Popconfirm, Tag } from 'antd'
 import { Key, useEffect, useRef, useState } from 'react'
@@ -13,6 +13,7 @@ const School = () => {
   const [tab, setTab] = useState('index')
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([])
   const [selectedClassRoom, setSelectedClassRoom] = useState<ClassRoomItem>()
+  const [showSeatMap, setShowSeatMap] = useState(false)
 
   const compare = (a: ClassRoomItem, b: ClassRoomItem, key: string) => {
     if (a[key] < b[key]) {
@@ -24,13 +25,6 @@ const School = () => {
   }
 
   const columns: ProColumns<ClassRoomItem>[] = [{
-    align: 'center',
-    dataIndex: 'ClassID',
-    sorter: {
-      compare: (a, b) => compare(a, b, 'ClassID')
-    },
-    title: '班级编号',
-  }, {
     align: 'center',
     dataIndex: 'SchoolName',
     sorter: {

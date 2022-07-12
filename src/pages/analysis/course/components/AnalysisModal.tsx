@@ -1,9 +1,11 @@
-import { Card, Col, Divider, Modal, Rate, Row, Space } from "antd"
+import { Card, Col, Divider, Modal, Rate, Row, Space } from 'antd';
 import * as Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import HighchartsMore from 'highcharts/highcharts-more'
 import Xrange from 'highcharts/modules/xrange'
-import { useEffect, useState } from "react";
+import * as echarts from 'echarts';
+import { useEffect, useRef, useState } from 'react';
+import moment from 'moment';
 
 HighchartsMore(Highcharts)
 Xrange(Highcharts)
@@ -15,9 +17,78 @@ type Props = {
 const AnalysisModal = (props: Props) => {
 
   const { onCancel } = props
+  const activeRef = useRef<HTMLDivElement>(null)
   const [bubbleOptions, setBubbleOptions] = useState<Highcharts.Options>()
   const [ganttOptions, setGanttOptions] = useState<Highcharts.Options>()
   const [activePieOptions, setActivePieOptions] = useState<Highcharts.Options>()
+  const [tempNumber, setTempNumber] = useState<number>(0)
+
+  useEffect(() => {
+    const clock = setInterval(() => {
+      setTempNumber(Math.round(Math.random()*100))
+    }, 3000)
+    return () => clearInterval(clock)
+  }, [])
+
+  useEffect(() => {
+    console.log(activeRef.current)
+    if (activeRef.current) {
+      const myChart = echarts.init(activeRef.current)
+      myChart.setOption({
+        title: {
+          text: 'ECharts 入门示例'
+        },
+        series: [
+          {
+            type: 'treemap',
+            breadcrumb: {
+              show: false,
+            },
+            data: [{
+              name: '江苏',
+              children: [{
+                name: '南京',
+                value: 100,
+              }, {
+                name: '苏州',
+                value: 150
+,              }]
+            }, {
+              name: '浙江',
+              children: [{
+                name: '杭州',
+                children: [{
+                  name: '杭州A',
+                  value: 100,
+                }, {
+                  name: '杭州B',
+                  value: 200,
+                }]
+              }, {
+                name: '宁波',
+                value: 40,
+              }]
+            }, {
+              name: '安徽',
+              children: [{
+                name: '合肥',
+                value: 10,
+              }, {
+                name: '芜湖',
+                value: 5
+              }]
+            }],
+            upperLabel:{
+              show: true,
+              color: '#ffffff',
+              height: 10,
+              backgroundColor: '#333037'
+            }
+          }
+        ]
+      });
+    }
+  }, [activeRef.current])
 
   useEffect(() => {
     setBubbleOptions({
@@ -36,20 +107,23 @@ const AnalysisModal = (props: Props) => {
         align: 'left'
       },
       series: [{
-        name:'思考',
+        name:'举手次数',
         data: [[97, 36, 79], [94, 74, 60], [68, 76, 58], [64, 87, 56], [68, 27, 73], [74, 99, 42], [7, 93, 87], [51, 69, 40], [38, 23, 33], [57, 86, 31]]
       }, {
-        name:'倾听',
+        name:'倾站立次数',
         data: [[25, 10, 87], [2, 75, 59], [11, 54, 8], [86, 55, 93], [5, 3, 58], [90, 63, 44], [91, 33, 17], [97, 3, 56], [15, 67, 48], [54, 25, 81]]
       }, {
-        name:'活跃',
+        name:'趴桌时长',
         data: [[47, 47, 21], [20, 12, 4], [6, 76, 91], [38, 30, 60], [57, 98, 64], [61, 17, 80], [83, 60, 13], [67, 78, 75], [64, 12, 10], [30, 77, 82]]
+      }, {
+        name:'注视黑板',
+        data: [[17, 57, 21], [29, 12, 4], [6, 45, 15], [8, 30, 36], [57, 9, 6], [16, 17, 8], [23, 14, 13], [7, 7, 75], [13, 26, 10], [3, 7, 82]]
       }],
       yAxis: {
         title: {
           align: 'high',
           rotation: 0,
-          text: '情绪系数',
+          text: '',
           x: 50,
           y: -10,
         }
@@ -142,49 +216,23 @@ const AnalysisModal = (props: Props) => {
         课堂信息：
       </div>
       <Row gutter={[8,8]}>
-        <Col span={8}>
-          <Card bodyStyle={{padding: 0}}>
-            较活跃
-            <Divider orientationMargin={0} /> 
-            课堂气氛活跃程度<Rate value={4} />
-          </Card>
+        <Col span={6}>
+          <Card title="举手次数"><span style={{fontSize: '48px', fontWeight: 'bold'}}>32</span>次</Card>
         </Col>
-        <Col span={8}>
-          <Card>课堂参与度</Card>
+        <Col span={6}>
+          <Card title="站立次数"><span style={{fontSize: '48px', fontWeight: 'bold'}}>15</span>次</Card>
         </Col>
-        <Col span={8}>
-          <Card>授课类型</Card>
+        <Col span={6}>
+          <Card title="趴桌比例"><span style={{fontSize: '48px', fontWeight: 'bold'}}>2</span>%</Card>
         </Col>
-        <Col span={8}>
-          <Card title="活跃度比率">
-            <HighchartsReact
-              highcharts={Highcharts}
-              options={activePieOptions}
-            />
-          </Card>
-        </Col>
-        <Col span={8}>
-          <Card title="行为/表情(人数)">课堂参与度</Card>
-        </Col>
-        <Col span={8}>
-          <Card title="教学行为比率">
-            <HighchartsReact
-              highcharts={Highcharts}
-              options={activePieOptions}
-            />
-          </Card>
+        <Col span={6}>
+          <Card title="注视黑板"><span style={{fontSize: '48px', fontWeight: 'bold'}}>80</span>%</Card>
         </Col>
       </Row>
       <div>
         <HighchartsReact
           highcharts={Highcharts}
           options={bubbleOptions}
-        />
-      </div>
-      <div>
-        <HighchartsReact
-          highcharts={Highcharts}
-          options={ganttOptions}
         />
       </div>
     </Modal>

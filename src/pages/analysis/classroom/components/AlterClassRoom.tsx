@@ -59,10 +59,6 @@ const AlterClassRoom = ({ onBack, selectedClassRoom }: AlterClassRoomProps) => {
         }}
       >
         <ProFormText name="id" hidden />
-        <ProFormDigit name="ClassID" label="班级编号" required rules={[{
-          required: true,
-          message: '请输入班级编号'
-        }]} />
         <ProFormSelect name="SchoolName" label="校区名称" required rules={[{
           required: true,
           message: '请选择校区'
