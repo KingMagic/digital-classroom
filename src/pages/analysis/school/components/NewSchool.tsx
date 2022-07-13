@@ -27,7 +27,7 @@ const NewSchool = ({ onBack }: NewSchoolProps) => {
   }
   return (
     <Card>
-      <div>
+      <div style={{marginBottom: 24}}>
         <a onClick={onBack}>返回</a>
         <Divider type="vertical" />
         <span>增加 校区管理</span>

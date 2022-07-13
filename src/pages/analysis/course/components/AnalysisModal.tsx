@@ -1,10 +1,12 @@
-import { Card, Col, Divider, Modal, Rate, Row, Space } from 'antd';
+import { Card, Col, Modal, Row } from 'antd';
 import * as Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import { useEffect, useRef, useState } from 'react';
-import moment from 'moment';
-import { CourseItem } from '../data';
+import noData from 'highcharts/modules/no-data-to-display'
+import { useEffect, useState } from 'react';
+import type { CourseItem } from '../data';
 import { getChart } from '../service';
+
+noData(Highcharts)
 
 type Props = {
   currentCourse: CourseItem;
@@ -16,9 +18,19 @@ const defaultOption: Highcharts.Options = {
     enabled: false
   },
   title: {
-    text: '活跃度分析',
-    align: 'left',
-    margin: 50,
+    text: ''
+  },
+  chart: {
+    spacing: [40,0,0,0]
+  },
+  noData: {
+    position: {
+      align: 'center',
+      verticalAlign: 'middle'
+    }
+  },
+  lang: {
+    noData: '暂无数据'
   }
 }
 
@@ -35,7 +47,12 @@ const AnalysisModal = (props: Props) => {
           ...options,
           xAxis: [{
             categories: res.data.map((item: any) => item.LineTime),
-            crosshair: true
+            title: {
+              text: '分钟',
+              align: 'high',
+              x: 30,
+              y: -20,
+            }
           }],
           yAxis: [{
             title: {
@@ -45,6 +62,7 @@ const AnalysisModal = (props: Props) => {
               x: 50,
               y: -20,
             },
+            allowDecimals: false,
             opposite: false,
             offset: 0,
           }, {
@@ -55,6 +73,7 @@ const AnalysisModal = (props: Props) => {
               x: 50,
               y: -20,
             },
+            allowDecimals: false,
             opposite: false,
             offset: 50,
           }, {
@@ -95,17 +114,23 @@ const AnalysisModal = (props: Props) => {
             name: '趴桌比例',
             type: 'spline',
             yAxis: 2,
-            data: res.data.map((item: any) => Number(item.LyingTableNum)*100)
+            data: res.data.map((item: any) => Math.round(item.LyingTableNum*100)),
+            tooltip: {
+              valueSuffix: '%'
+            }
           }, {
             name: '注视黑板',
             type: 'spline',
             yAxis: 3,
-            data: res.data.map((item: any) => Number(item.BlackboardNum)*100)
+            data: res.data.map((item: any) => Math.round(item.BlackboardNum*100)),
+            tooltip: {
+              valueSuffix: '%'
+            }
           }]
         })
       }
     })
-  }, [])
+  }, [currentCourse.id])
 
   return (
     <Modal
@@ -113,10 +138,8 @@ const AnalysisModal = (props: Props) => {
       onCancel={onCancel}
       visible
       width={1600}
+      footer={null}
     >
-      <div>
-        课堂信息：
-      </div>
       <Row gutter={[8,8]}>
         <Col span={6}>
           <Card title="举手次数" style={{textAlign: 'center'}}><span style={{fontSize: '48px', fontWeight: 'bold'}}>{currentCourse.RaiseHandNum}</span>次</Card>

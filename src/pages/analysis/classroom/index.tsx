@@ -1,10 +1,13 @@
 import { DeleteOutlined, EditOutlined, MinusCircleOutlined, PlusOutlined, TeamOutlined } from '@ant-design/icons'
-import ProTable, { ActionType, ProColumns } from '@ant-design/pro-table'
+import type { ActionType, ProColumns } from '@ant-design/pro-table';
+import ProTable from '@ant-design/pro-table'
 import { Button, message, Popconfirm, Tag } from 'antd'
-import { Key, useEffect, useRef, useState } from 'react'
+import type { Key} from 'react';
+import { useEffect, useRef, useState } from 'react'
 import AlterClassRoom from './components/AlterClassRoom'
 import NewClassRoom from './components/NewClassRoom'
-import { ClassRoomItem } from './data'
+import PageLoading from '@/components/PageLoading';
+import type { ClassRoomItem } from './data'
 import { getClassRoomList, deleteClassRoom } from './service'
 
 const School = () => {
@@ -13,6 +16,7 @@ const School = () => {
   const [tab, setTab] = useState('index')
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([])
   const [selectedClassRoom, setSelectedClassRoom] = useState<ClassRoomItem>()
+  const [loading, setLoading] = useState(false)
 
   const compare = (a: ClassRoomItem, b: ClassRoomItem, key: string) => {
     if (a[key] < b[key]) {
@@ -60,13 +64,12 @@ const School = () => {
         setSelectedClassRoom(entity)
         setTab('alter')
       }} style={{color: '#67C23A', padding: '6px 10px'}}><EditOutlined /> 修改</a>,
-      <Popconfirm title="确认要删除吗" onConfirm={() => {
-        deleteClassRoom({id: entity.id}).then(res => {
+      <Popconfirm key="delete" title="确认要删除吗" onConfirm={() => {
+        setLoading(true)
+        deleteClassRoom({id: entity.id}).then(() => {
           ref.current?.reload()
-          // if (res.success) {
-          //   ref.current?.reload()
-          //   message.success('删除成功')
-          // }
+          message.success('删除成功')
+          setLoading(false)
         })
       }}>
         <a key="delete" style={{color: '#F56C6C', padding: '6px 10px'}}><MinusCircleOutlined /> 删除</a>

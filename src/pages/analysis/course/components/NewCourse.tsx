@@ -1,9 +1,9 @@
 import ProForm, { ProFormDigit, ProFormSelect, ProFormText, ProFormDateTimePicker } from "@ant-design/pro-form"
 import { Card, Col, Divider, Form, message, Row, Space } from "antd"
 import { useEffect, useState } from "react"
-import { ClassRoomItem } from "../../classroom/data"
+import type { ClassRoomItem } from "../../classroom/data"
 import { getClassRoomList } from "../../classroom/service"
-import { SchoolItem } from "../../school/data"
+import type { SchoolItem } from "../../school/data"
 import { getSchoolList } from "../../school/service"
 import { addCourse } from "../service"
 
@@ -51,7 +51,7 @@ const NewCourse = ({ onBack }: NewCourseProps) => {
 
   return (
     <Card>
-      <div>
+      <div style={{marginBottom: 24}}>
         <a onClick={onBack}>返回</a>
         <Divider type="vertical" />
         <span>增加 班级管理</span>
@@ -95,7 +95,7 @@ const NewCourse = ({ onBack }: NewCourseProps) => {
         <ProFormDigit name="Duration" label="课程时长" required rules={[{
           required: true,
           message: '请输入课程时长'
-        }]} />
+        }]} addonAfter='分钟' />
       </ProForm>
     </Card>
   )

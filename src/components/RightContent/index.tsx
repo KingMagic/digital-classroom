@@ -1,10 +1,6 @@
-import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Space } from 'antd';
 import React from 'react';
-import { useModel } from 'umi';
-import HeaderSearch from '../HeaderSearch';
-import NoticeIconView from '../NoticeIcon';
-import Avatar from './AvatarDropdown';
+import { history, useModel } from 'umi';
 import styles from './index.less';
 export type SiderTheme = 'light' | 'dark';
 
@@ -25,6 +21,10 @@ const GlobalHeaderRight: React.FC = () => {
   return (
     <Space className={className}>
       <a href="http://qctk.nat300.top/admin" style={{color: '#ffffff'}}>控制后台</a>
+      <a onClick={() => {
+        window.sessionStorage.removeItem('login')
+        history.push('/')
+      }} style={{color: '#ffffff'}}>退出登录</a>
       {/* <Avatar menu /> */}
     </Space>
   );

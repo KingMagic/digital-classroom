@@ -8,9 +8,9 @@ export type CourseItem = {
   StartTime: string;
   EndTime: string;
   Duration: number;
-  BlackboardNum: string;
-  LyingTableNum: string;
-  RaiseHandNum: string;
-  StandNum: string;
+  BlackboardNum: number;
+  LyingTableNum: number;
+  RaiseHandNum: number;
+  StandNum: number;
   Status: boolean;
 };

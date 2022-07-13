@@ -1,16 +1,15 @@
 import ProTable from "@ant-design/pro-table"
-import { Key, useRef, useState } from "react";
+import type { Key} from "react";
+import { useRef, useState } from "react";
 import type { CourseItem } from "./data"
 import type { ActionType, ProColumns } from "@ant-design/pro-table"
-import { getCourseList } from "./service";
+import { deleteCourse, getCourseList } from "./service";
 import { Button, Col, Modal, Row, Space, Switch, Tag } from "antd";
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import moment from "moment";
 import RealTimeTable from "./components/RealTimeTable";
 import AnalysisModal from "./components/AnalysisModal";
-import { ClassRoomItem } from "../classroom/data";
 import NewCourse from "./components/NewCourse";
-import AlterCourse from "./components/AlterCourse";
 
 const Course = () => {
   
@@ -78,12 +77,19 @@ const Course = () => {
     align: 'center',
     render: (dom, entity) => (
       <Space>
-        <Button style={{backgroundColor: '#909399'}} ghost onClick={() => {
+        <Button style={{backgroundColor: '#ffa500'}} ghost onClick={() => {
           setCurrentCourse(entity)
         }}>分析结果</Button>
       </Space>
     )
   }]
+
+  const deleteBatch = () => {
+    Promise.all(selectedRowKeys.map(key => deleteCourse({id: key}))).then(() => {
+      ref.current?.reload()
+      message.success('删除成功')
+    })
+  }
 
   const CourseTable = () => (
     <>
@@ -114,11 +120,8 @@ const Course = () => {
               key: 'add',
               label: <Button style={{backgroundColor: '#009688'}} ghost icon={<PlusOutlined />} onClick={() => setTab('new')}>增加</Button>
             }, {
-              key: 'alter',
-              label: <Button style={{backgroundColor: '#67C23A'}} disabled={selectedRowKeys.length === 0} ghost icon={<EditOutlined />} onClick={() => setTab('alter')}>修改</Button>
-            }, {
               key: 'remove',
-              label: <Button style={{backgroundColor: '#F56C6C'}} disabled={selectedRowKeys.length === 0} ghost icon={<DeleteOutlined />}>批量删除</Button>
+              label: <Button style={{backgroundColor: '#F56C6C'}} disabled={selectedRowKeys.length === 0} ghost onClick={deleteBatch} icon={<DeleteOutlined />}>批量删除</Button>
             },]
           }
         }}
@@ -131,7 +134,6 @@ const Course = () => {
     <div>
     {tab === 'index' && CourseTable()}
     {tab === 'new' && <NewCourse onBack={() => setTab('index')} />}
-    {tab === 'alter' && <AlterCourse onBack={() => setTab('index')} selectedCourse={selectedCourse} />}
     </div>
   )
 }

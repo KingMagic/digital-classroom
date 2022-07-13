@@ -52,9 +52,11 @@ const Login: React.FC = () => {
 
   return (
     <div className={styles.container}>
+      <div className={styles.left} />
       <div className={styles.content}>
         <LoginForm
-          title="数字教室课情分析平台"
+          logo={'/logo.png'}
+          title="智慧教学课情分析平台"
           initialValues={{
             autoLogin: true,
           }}
@@ -65,7 +67,7 @@ const Login: React.FC = () => {
           {showErr ? (
             <LoginMessage content={'错误的用户名和密码'} />
           ) : (
-            <div style={{ height: 43 }}></div>
+            <div style={{ height: 43 }} />
           )}
           
           <ProFormText
@@ -98,7 +100,6 @@ const Login: React.FC = () => {
           />
         </LoginForm>
       </div>
-      <div className={styles.left}></div>
     </div>
   );
 };

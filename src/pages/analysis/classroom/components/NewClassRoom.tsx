@@ -1,7 +1,7 @@
 import ProForm, { ProFormDigit, ProFormSelect, ProFormText } from "@ant-design/pro-form"
 import { Card, Col, Divider, message, Row, Space } from "antd"
 import { useEffect, useState } from "react"
-import { SchoolItem } from "../../school/data"
+import type { SchoolItem } from "../../school/data"
 import { getSchoolList } from "../../school/service"
 import { addClassRoom } from "../service"
 
@@ -34,7 +34,7 @@ const NewClassRoom = ({ onBack }: NewClassRoomProps) => {
 
   return (
     <Card>
-      <div>
+      <div style={{marginBottom: 24}}>
         <a onClick={onBack}>返回</a>
         <Divider type="vertical" />
         <span>增加 班级管理</span>
@@ -57,10 +57,10 @@ const NewClassRoom = ({ onBack }: NewClassRoomProps) => {
           },
         }}
       >
-        <ProFormSelect name="SchoolName" label="校区名称" required rules={[{
+        <ProFormSelect name="School" label="校区名称" required rules={[{
           required: true,
           message: '请选择校区'
-        }]} options={schoolList.map(school => ({value: school.SchoolName, label: school.SchoolName}))} />
+        }]} options={schoolList.map(school => ({value: school.id, label: school.SchoolName}))} />
         <ProFormText name="ClassName" label="班级名称" required rules={[{
           required: true,
           message: '请输入班级名称'

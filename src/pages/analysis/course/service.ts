@@ -12,14 +12,14 @@ export async function getRealTimeData(params: { classId: number }) {
   })
 }
 
-export async function addCourse(data: { [key: string]: any }, options?: { [key: string]: any }) {
+export async function addCourse(data: Record<string, any>, options?: Record<string, any>) {
   return request('/api/Course', {
     data,
     method: 'POST',
   })
 }
 
-export async function alterCourse(data: { [key: string]: any }, options?: { [key: string]: any }) {
+export async function alterCourse(data: Record<string, any>, options?: Record<string, any>) {
   return request('/api/Course/'+data.id, {
     data,
     method: 'PUT',
@@ -27,7 +27,15 @@ export async function alterCourse(data: { [key: string]: any }, options?: { [key
   })
 }
 
-export async function getChart(params: { [key: string]: any }) {
+export async function deleteCourse(data: Record<string, any>, options?: Record<string, any>) {
+  return request('/api/Course/'+data.id, {
+    data,
+    method: 'DELETE',
+    ...(options || {}),
+  })
+}
+
+export async function getChart(params: Record<string, any>) {
   return request('/api/Chart', {
     params,
   });

@@ -1,9 +1,9 @@
 import ProForm, { ProFormDigit, ProFormSelect, ProFormText } from "@ant-design/pro-form"
 import { Card, Col, Divider, Row, Space } from "antd"
 import { useEffect, useState } from "react"
-import { SchoolItem } from "../../school/data"
+import type { SchoolItem } from "../../school/data"
 import { getSchoolList } from "../../school/service"
-import { CourseItem } from "../data"
+import type { CourseItem } from "../data"
 import { alterCourse } from "../service"
 
 type AlterCourseProps = {
@@ -34,7 +34,7 @@ const AlterCourse = ({ onBack, selectedCourse }: AlterCourseProps) => {
   
   return (
     <Card>
-      <div>
+      <div style={{marginBottom: 24}}>
         <a onClick={onBack}>返回</a>
         <Divider type="vertical" />
         <span>修改 班级管理</span>

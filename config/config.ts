@@ -17,7 +17,7 @@ export default defineConfig({
     ...defaultSettings,
   },
   dynamicImport: {
-    loading: '@ant-design/pro-layout/es/PageLoading',
+    loading: '@/components/PageLoading',
   },
   targets: {
     ie: 11,
@@ -61,19 +61,19 @@ export default defineConfig({
     },
     {
       name: '校区管理',
-      icon: 'smile',
+      icon: 'bank',
       path: '/analysis/school',
       component: './analysis/school',
     },
     {
       name: '班级管理',
-      icon: 'smile',
+      icon: 'solution',
       path: '/analysis/classroom',
       component: './analysis/classroom',
     },
     {
       name: '课程管理',
-      icon: 'smile',
+      icon: 'read',
       path: '/analysis/course',
       component: './analysis/course',
     },

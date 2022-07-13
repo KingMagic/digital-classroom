@@ -12,9 +12,9 @@ const Settings: LayoutSettings & {
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: '华为数字教室课情分析平台',
+  title: '智慧教学课情分析平台',
   pwa: false,
-  logo: '/logo_mini.png',
+  logo: '/logo.png',
   iconfontUrl: '',
 };
 
