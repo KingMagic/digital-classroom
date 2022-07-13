@@ -13,7 +13,6 @@ const School = () => {
   const [tab, setTab] = useState('index')
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([])
   const [selectedClassRoom, setSelectedClassRoom] = useState<ClassRoomItem>()
-  const [showSeatMap, setShowSeatMap] = useState(false)
 
   const compare = (a: ClassRoomItem, b: ClassRoomItem, key: string) => {
     if (a[key] < b[key]) {

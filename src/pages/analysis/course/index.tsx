@@ -3,18 +3,21 @@ import { Key, useRef, useState } from "react";
 import type { CourseItem } from "./data"
 import type { ActionType, ProColumns } from "@ant-design/pro-table"
 import { getCourseList } from "./service";
-import { Button, Col, Modal, Row, Space, Tag } from "antd";
+import { Button, Col, Modal, Row, Space, Switch, Tag } from "antd";
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import moment from "moment";
 import RealTimeTable from "./components/RealTimeTable";
 import AnalysisModal from "./components/AnalysisModal";
 import { ClassRoomItem } from "../classroom/data";
+import NewCourse from "./components/NewCourse";
+import AlterCourse from "./components/AlterCourse";
 
 const Course = () => {
   
   const ref = useRef<ActionType>();
   const [tab, setTab] = useState('index')
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([])
+  const [selectedCourse, setSelectedCourse] = useState<CourseItem>()
   const [currentCourse, setCurrentCourse] = useState<CourseItem>()
   const [showRealTime, setShowRealTime] = useState(false)
   const [showAnalysis, setShowAnalysis] = useState(false)
@@ -30,92 +33,59 @@ const Course = () => {
 
   const columns: ProColumns<CourseItem>[] = [{
     title: '课程名',
-    dataIndex: 'name',
+    dataIndex: 'CourseName',
     align: 'center',
-    sorter: {
-      compare: (a, b) => compare(a, b, 'name')
-    },
   }, {
     title: '校区名称',
-    dataIndex: 'school',
+    dataIndex: 'SchoolName',
     align: 'center',
-    sorter: {
-      compare: (a, b) => compare(a, b, 'name')
-    },
-    render: (dom: any) => dom.name
   }, {
     title: '班级名称',
-    dataIndex: 'classList',
+    dataIndex: 'ClassName',
     align: 'center',
-    sorter: {
-      compare: (a, b) => compare(a, b, 'name')
-    },
-    render: (dom: any) => dom.map((item: ClassRoomItem) => <Tag key={item.id} color="blue">{item.ClassName}</Tag>)
   }, {
     title: '上课时间',
-    dataIndex: 'beginTime',
+    dataIndex: 'StartTime',
     align: 'center',
-    sorter: {
-      compare: (a, b) => compare(a, b, 'beginTime')
-    },
-    render: (dom: any) => moment(dom).format('YYYY-MM-DD hh:mm:ss')
+    render: (dom: any) => moment(dom).format('YYYY-MM-DD HH:mm:ss')
   }, {
     title: '课程时长',
-    dataIndex: 'beginTime',
+    dataIndex: 'Duration',
     align: 'center',
-    sorter: {
-      compare: (a, b) => compare(a, b, 'beginTime')
-    },
-    render: (dom: any) => moment(dom).format('YYYY-MM-DD hh:mm:ss')
   }, {
     title: '举手次数',
-    dataIndex: 'raise',
+    dataIndex: 'RaiseHandNum',
     align: 'center',
-    sorter: {
-      compare: (a, b) => compare(a, b, 'name')
-    },
   }, {
     title: '站立次数',
-    dataIndex: 'stand',
+    dataIndex: 'StandNum',
     align: 'center',
-    sorter: {
-      compare: (a, b) => compare(a, b, 'name')
-    },
   }, {
     title: '趴桌占比',
-    dataIndex: 'lie',
+    dataIndex: 'LyingTableNum',
     align: 'center',
-    sorter: {
-      compare: (a, b) => compare(a, b, 'name')
-    },
   }, {
     title: '看黑板占比',
-    dataIndex: 'lie',
+    dataIndex: 'BlackboardNum',
     align: 'center',
-    sorter: {
-      compare: (a, b) => compare(a, b, 'name')
-    },
   }, {
-    title: '状态',
-    dataIndex: 'active',
+    title: '是否下课',
+    dataIndex: 'Status',
     align: 'center',
-    sorter: {
-      compare: (a, b) => compare(a, b, 'name')
-    },
+    render: (dom: any) => <Switch checked={dom} />
   }, {
     title: '课情分析',
     align: 'center',
     render: (dom, entity) => (
       <Space>
         <Button style={{backgroundColor: '#909399'}} ghost onClick={() => {
-          setShowRealTime(true)
           setCurrentCourse(entity)
-        }}>课程分析</Button>
+        }}>分析结果</Button>
       </Space>
     )
   }]
 
-  return (
+  const CourseTable = () => (
     <>
       <ProTable<CourseItem>
         actionRef={ref}
@@ -153,25 +123,16 @@ const Course = () => {
           }
         }}
       />
-      <Modal
-        title="实时信息"
-        destroyOnClose
-        footer={null}
-        onCancel={() => setShowRealTime(false)}
-        visible={showRealTime}
-        width="60%"
-      >
-        <Row gutter={16}>
-          {currentCourse?.classList.map(classItem => (
-            <Col key={classItem.id} span={12}>
-              {classItem.name}
-              <RealTimeTable classId={classItem.id} />
-            </Col>
-          ))}
-        </Row>
-      </Modal>
-      {showAnalysis && <AnalysisModal onCancel={() => setShowAnalysis(false)} />}
+      {currentCourse && <AnalysisModal currentCourse={currentCourse} onCancel={() => setCurrentCourse(undefined)} />}
     </>
+  )
+
+  return (
+    <div>
+    {tab === 'index' && CourseTable()}
+    {tab === 'new' && <NewCourse onBack={() => setTab('index')} />}
+    {tab === 'alter' && <AlterCourse onBack={() => setTab('index')} selectedCourse={selectedCourse} />}
+    </div>
   )
 }
 

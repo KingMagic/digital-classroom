@@ -24,8 +24,8 @@ const GlobalHeaderRight: React.FC = () => {
 
   return (
     <Space className={className}>
-      <span style={{color: '#ffffff'}}>控制后台</span>
-      <Avatar menu />
+      <a href="http://qctk.nat300.top/admin" style={{color: '#ffffff'}}>控制后台</a>
+      {/* <Avatar menu /> */}
     </Space>
   );
 };

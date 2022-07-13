@@ -23,26 +23,8 @@ export async function getInitialState(): Promise<{
   currentUser?: API.CurrentUser;
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
 }> {
-  const fetchUserInfo = async () => {
-    try {
-      const msg = await queryCurrentUser();
-      return msg;
-    } catch (error) {
-      history.push(loginPath);
-    }
-    return undefined;
-  };
-  // 如果是登录页面，不执行
-  if (history.location.pathname !== loginPath) {
-    const currentUser = await fetchUserInfo();
-    return {
-      fetchUserInfo,
-      currentUser,
-      settings: {},
-    };
-  }
   return {
-    fetchUserInfo,
+    currentUser: {},
     settings: {},
   };
 }
@@ -60,7 +42,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
       const { location } = history;
       // 如果没有登录，重定向到 login
       console.log(initialState)
-      if (!initialState?.currentUser && location.pathname !== loginPath) {
+      if (window.sessionStorage.getItem('login') !== '1' && location.pathname !== loginPath) {
         history.push(loginPath);
       }
     },

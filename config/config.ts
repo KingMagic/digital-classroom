@@ -71,24 +71,6 @@ export default defineConfig({
       path: '/analysis/classroom',
       component: './analysis/classroom',
     },
-    // {
-    //   name: '分组管理',
-    //   icon: 'smile',
-    //   path: '/analysis/group',
-    //   component: './analysis/group',
-    // },
-    // {
-    //   name: '教师管理',
-    //   icon: 'smile',
-    //   path: '/analysis/teacher',
-    //   component: './analysis/teacher',
-    // },
-    // {
-    //   name: '学生管理',
-    //   icon: 'smile',
-    //   path: '/analysis/student',
-    //   component: './analysis/student',
-    // },
     {
       name: '课程管理',
       icon: 'smile',
@@ -118,20 +100,6 @@ export default defineConfig({
   },
   // Fast Refresh 热更新
   fastRefresh: {},
-  openAPI: [
-    {
-      requestLibPath: "import { request } from 'umi'",
-      // 或者使用在线的版本
-      // schemaPath: "https://gw.alipayobjects.com/os/antfincdn/M%24jrzTTYJN/oneapi.json"
-      schemaPath: join(__dirname, 'oneapi.json'),
-      mock: false,
-    },
-    {
-      requestLibPath: "import { request } from 'umi'",
-      schemaPath: 'https://gw.alipayobjects.com/os/antfincdn/CA1dOm%2631B/openapi.json',
-      projectName: 'swagger',
-    },
-  ],
   nodeModulesTransform: {
     type: 'none',
   },

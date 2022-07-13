@@ -19,18 +19,4 @@ export default {
       pathRewrite: { '^': '' },
     },
   },
-  // test: {
-  //   '/api/': {
-  //     target: 'http://ehm9hq.natappfree.cc',
-  //     changeOrigin: true,
-  //     pathRewrite: { '^': '' },
-  //   },
-  // },
-  // pre: {
-  //   '/api/': {
-  //     target: 'http://ehm9hq.natappfree.cc',
-  //     changeOrigin: true,
-  //     pathRewrite: { '^': '' },
-  //   },
-  // },
 };
